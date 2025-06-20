@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=admin123
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+  api:
+    build: ./api
+    container_name: custom_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/app
+    restart: always
+
+volumes:
+  n8n_data:
